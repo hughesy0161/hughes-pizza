@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hughes Woodfire Pizza</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background-color: #fff;
+        color: #222;
+    }
+
+    header {
+        background: url('https://images.unsplash.com/photo-1601924582971-3be9e1a74f6b') center/cover no-repeat;
+        height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        position: relative;
+    }
+    header::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+    }
+    header div {
+        z-index: 1;
+    }
+    header h1 {
+        font-size: 3.5rem;
+        margin-bottom: 10px;
+    }
+    header p {
+        font-size: 1.2rem;
+    }
+
+    section {
+        max-width: 1100px;
+        margin: auto;
+        padding: 50px 20px;
+    }
+    h2 {
+        font-size: 2rem;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #d32f2f;
+    }
+
+    .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    .menu-item {
+        background: #fafafa;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        text-align: center;
+        padding-bottom: 15px;
+    }
+    .menu-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .menu-item h3 {
+        margin: 15px 0 5px;
+    }
+    .menu-item p {
+        font-size: 0.9rem;
+        padding: 0 10px;
+    }
+    .price {
+        font-weight: bold;
+        margin: 10px 0;
+        font-size: 1.1rem;
+    }
+    .menu-item button {
+        background: #d32f2f;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 5px;
+        margin: 5px;
+    }
+    .menu-item button:hover {
+        background: #b71c1c;
+    }
+
+    /* Cart Sidebar */
+    #cart {
+        position: fixed;
+        top: 0;
+        right: -350px;
+        width: 300px;
+        height: 100%;
+        background: white;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+        padding: 20px;
+        transition: right 0.3s ease;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+    #cart.active { right: 0; }
+    #cart h3 { margin-top: 0; }
+    #cart-items { margin-bottom: 20px; }
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .cart-total {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    #close-cart {
+        background: #d32f2f;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+    #view-cart-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #d32f2f;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    footer {
+        background: #222;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin-top: 50px;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div>
+        <h1>Hughes Woodfire Pizza</h1>
+        <p>Neapolitan perfection, baked fresh in our wood-fired oven</p>
+    </div>
+</header>
+
+<section>
+    <h2>About Us</h2>
+    <p>We believe in the art of pizza-making. At Hughes Woodfire Pizza, each pizza is lovingly hand-stretched, topped with the freshest ingredients, and baked in a roaring wood-fired oven for that authentic taste. Whether you’re craving a classic Margherita or a bold Pepperoni, we’ve got your next slice waiting.</p>
+</section>
+
+<section>
+    <h2>Menu</h2>
+    <div class="menu-grid">
+        <div class="menu-item">
+            <img src="https://images.unsplash.com/photo-1601924582971-3be9e1a74f6b" alt="Margherita Pizza">
+            <h3>Margherita</h3>
+            <p>San Marzano tomatoes, mozzarella, fresh basil</p>
+            <p class="price">£8.00</p>
+            <button onclick="addToCart('Margherita', 8)">Add to Basket</button>
+            <div id="paypal-margerita"></div>
+        </div>
+        <div class="menu-item">
+            <img src="https://images.unsplash.com/photo-1594007654729-407eedc4be6b" alt="Pepperoni Pizza">
+            <h3>Pepperoni</h3>
+            <p>Classic pepperoni, mozzarella, fresh tomato sauce</p>
+            <p class="price">£9.50</p>
+            <button onclick="addToCart('Pepperoni', 9.5)">Add to Basket</button>
+            <div id="paypal-pepperoni"></div>
+        </div>
+        <div class="menu-item">
+            <img src="https://images.unsplash.com/photo-1603079846314-3c7f3c5c3e4f" alt="Vegetarian Pizza">
+            <h3>Vegetarian</h3>
+            <p>Seasonal vegetables, mozzarella, tomato base</p>
+            <p class="price">£8.50</p>
+            <button onclick="addToCart('Vegetarian', 8.5)">Add to Basket</button>
+            <div id="paypal-vegetarian"></div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2>How to Order</h2>
+    <p>Simply browse our menu, add your favourite pizzas to your basket, and when you’re ready, head to checkout. You can pay securely via PayPal or contact us to arrange collection/delivery.</p>
+</section>
+
+<section>
+    <h2>Contact Us</h2>
+    <p>📞 Call us: <a href="tel:+07708844760">+07708844760</a></p>
+    <p>📧 Email: <a href="mailto:leehughes111@gmail.com">leehughes111@gmail.com</a></p>
+</section>
+
+<!-- View Cart Button -->
+<div id="view-cart-btn" onclick="toggleCart()">View Basket</div>
+
+<!-- Cart Sidebar -->
+<div id="cart">
+    <h3>Your Basket</h3>
+    <div id="cart-items"></div>
+    <div class="cart-total">Total: £<span id="cart-total">0.00</span></div>
+    <button id="close-cart" onclick="toggleCart()">Close</button>
+</div>
+
+<footer>
+    <p>© 2025 Hughes Woodfire Pizza. All rights reserved.</p>
+</footer>
+
+<!-- PayPal SDK (Sandbox Mode) -->
+<script src="https://www.paypal.com/sdk/js?client-id=sb&currency=GBP"></script>
+
+<script>
+    let cart = [];
+
+    function addToCart(name, price) {
+        cart.push({ name, price });
+        alert(name + " added to basket!");
+        updateCartDisplay();
+    }
+
+    function toggleCart() {
+        document.getElementById('cart').classList.toggle('active');
+    }
+
+    function updateCartDisplay() {
+        let cartItemsContainer = document.getElementById('cart-items');
+        let cartTotal = 0;
+        cartItemsContainer.innerHTML = '';
+        cart.forEach((item) => {
+            cartTotal += item.price;
+            cartItemsContainer.innerHTML += `
+                <div class="cart-item">
+                    <span>${item.name}</span>
+                    <span>£${item.price.toFixed(2)}</span>
+                </div>
+            `;
+        });
+        document.getElementById('cart-total').textContent = cartTotal.toFixed(2);
+    }
+
+    // PayPal Demo Buttons
+    paypal.Buttons({
+        createOrder: (data, actions) => {
+            return actions.order.create({
+                purchase_units: [{
+                    description: "Margherita Pizza",
+                    amount: { value: "8.00" }
+                }]
+            });
+        },
+        onApprove: (data, actions) => {
+            alert('Payment successful for Margherita!');
+        }
+    }).render('#paypal-margerita');
+
+    paypal.Buttons({
+        createOrder: (data, actions) => {
+            return actions.order.create({
+                purchase_units: [{
+                    description: "Pepperoni Pizza",
+                    amount: { value: "9.50" }
+                }]
+            });
+        },
+        onApprove: (data, actions) => {
+            alert('Payment successful for Pepperoni!');
+        }
+    }).render('#paypal-pepperoni');
+
+    paypal.Buttons({
+        createOrder: (data, actions) => {
+            return actions.order.create({
+                purchase_units: [{
+                    description: "Vegetarian Pizza",
+                    amount: { value: "8.50" }
+                }]
+            });
+        },
+        onApprove: (data, actions) => {
+            alert('Payment successful for Vegetarian!');
+        }
+    }).render('#paypal-vegetarian');
+</script>
+</body>
+</html>
